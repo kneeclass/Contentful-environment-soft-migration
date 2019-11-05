@@ -1,0 +1,30 @@
+{
+  "name": "cesm",
+  "version": "1.0.0",
+  "description": "cesm, do it safly",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "cesm": "./index.js"
+  },
+  "keywords": [
+    "CLI",
+    "Contentful"
+  ],
+  "author": "Niklas Emevi",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "clear": "^0.1.0",
+    "clui": "^0.3.6",
+    "configstore": "^5.0.0",
+    "contentful-management": "^5.11.3",
+    "figlet": "^1.2.4",
+    "inquirer": "^7.0.0",
+    "lodash": "^4.17.15",
+    "minimist": "^1.2.0",
+    "touch": "^3.1.0"
+  }
+}
