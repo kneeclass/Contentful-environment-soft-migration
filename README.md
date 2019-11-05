@@ -11,13 +11,26 @@ Run: `npm install -g cesm`
 
 ## Usage
 
-...
+Cesm can run in two modes. Either via the CLI where the user is asked a series of questions about the migration.
+Or you can via parameters run Cesm from your CI pipelines.
+
+```bash
+cesm <optional parameters>
+
+Options:
+  --token       Contentful personal accesstoken   [optional]
+  --space       Contentful space id               [optional]
+  --from        Contentful environment name       [optional]
+  --to          Contentful environment name       [optional]
+
+    Planned
+  --excludeOnPrefix Excludes contentType based on a prefix value [optional]
+  
+```
 
 ## License
 
 The MIT License (MIT)
-
-Copyright (c) 2019 SitePoint
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
