@@ -1,5 +1,6 @@
 # Contentful environment soft migration
 
+The easy to use CLI for contenttype migrations.
 
 ## Requirements
 
@@ -11,8 +12,7 @@ Run: `npm install -g cesm`
 
 ## Usage
 
-Cesm can run in two modes. Either via the CLI where the user is asked a series of questions about the migration.
-Or you can via parameters run Cesm from your CI pipelines.
+After installing type "cesm" in your cmd.
 
 ```bash
 cesm <optional parameters>
@@ -23,8 +23,7 @@ Options:
   --from        Contentful environment name       [optional]
   --to          Contentful environment name       [optional]
 
-    Planned
-  --excludeOnPrefix Excludes contentType based on a prefix value [optional]
+  --dump or -d  Dumps information about the diffs in entities   [optional]
   
 ```
 

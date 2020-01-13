@@ -9,11 +9,18 @@ const inquirer = require('./lib/inquirer')
 const contentful = require('./lib/contentful');
 const differ = require('./lib/differ');
 
+const constants = require('./constants')
+
+//actions
+const addContentType = require('./lib/actions/addContentType')
+const addFields = require('./lib/actions/addFields')
+const addUiExtensions = require('./lib/actions/addUiExtensions')
+
 clear();
 
 console.log(chalk.yellow(figlet.textSync('CESM', { horizontalLayout: 'full' })));
 console.log(chalk.green`Contentful environment soft migration`);
-console.log(chalk.green`-------------------------------------`);
+console.log(chalk.green`-----------------------------------------------`);
 console.log();
 
 const args = parseArgs(process.argv);
@@ -49,6 +56,27 @@ const getContentfulCredentials = async () => {
   return credentials;
 };
 
+const askActionToPerform = async (selectedEnvironments,credentials) => {
+
+  const selectedAction = await inquirer.askActionToPerform();
+
+  switch(selectedAction.action){
+
+    case constants.actions.addContentType:
+      await addContentType.start(selectedEnvironments,credentials,args);
+      break;
+    case constants.actions.addFields:
+      await addFields.start(selectedEnvironments,credentials,args);
+      break;
+    case constants.actions.addUiExtensions:
+      await addUiExtensions.start(selectedEnvironments,credentials,args);
+      break;
+
+  }
+
+
+}
+
 const run = async () => {
   try {
     // Retrieve & Set Authentication Token
@@ -56,41 +84,14 @@ const run = async () => {
     contentful.initClient(credentials.token)
     let environments = await contentful.getEnvironments(credentials);
     var selectedEnvironments = argsEnvironment() || await inquirer.askEnvironments(environments);    
-    let fromContentTypes = await contentful.getEnvironmentContentTypes(credentials,selectedEnvironments.from);    
-    let toContentTypes = await contentful.getEnvironmentContentTypes(credentials, selectedEnvironments.to);    
+
+    while(true){
+      console.log();
+      await askActionToPerform(selectedEnvironments,credentials);
+      console.log();
+      console.log(chalk.green`-----------------------------------------------`);
+    }
     
-
-    /* Adding new ContentTypes */
-    var contentTypeDiff = differ.findNewContentTypes(fromContentTypes,toContentTypes);
-    if(contentTypeDiff.length > 0){
-      let newContentTypes = await inquirer.askNewContentTypes(contentTypeDiff);
-      if(newContentTypes.contentTypesToAdd.length > 0){
-        newContentTypes.contentTypesToAdd.forEach(x => {
-          let contentType = contentTypeDiff.find(y => y.sys.id == x);
-          contentful.createContentType(credentials,contentType,selectedEnvironments.to);
-        })
-      }
-      else{
-        console.log(chalk.cyanBright('No ContentTypes selected for migration'))
-      }
-    }
-
-    /* Adding new fields to ContentTypes */
-    var contentTypeFieldDiff = differ.findNewFields(fromContentTypes,toContentTypes);
-    if(Object.keys(contentTypeFieldDiff).length > 0){
-      let newContentTypes = await inquirer.askNewContentTypeFields(contentTypeFieldDiff);
-      if(newContentTypes.contentTypeFieldsToAdd.length > 0){
-        
-        newContentTypes.contentTypeFieldsToAdd.forEach(x => {
-          var contentType = fromContentTypes.items.find(y => y.sys.id == x)
-          var fields = contentTypeFieldDiff[contentType.sys.id];
-          contentful.createContentTypeFields(credentials,contentType,fields,selectedEnvironments.to)
-        })
-      }
-      else{
-        console.log(chalk.cyanBright('No ContentType fields selected for migration'))
-      }
-    }
   } catch(err) {
     console.log(err);
   }

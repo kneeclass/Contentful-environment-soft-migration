@@ -1,6 +1,6 @@
 {
   "name": "cesm",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "cesm, do it safly",
   "main": "index.js",
   "scripts": {
@@ -18,9 +18,11 @@
   "dependencies": {
     "chalk": "^2.4.2",
     "clear": "^0.1.0",
+    "cli-spinner": "^0.2.10",
     "clui": "^0.3.6",
     "configstore": "^5.0.0",
     "contentful-management": "^5.11.3",
+    "deep-object-diff": "^1.1.0",
     "figlet": "^1.2.4",
     "inquirer": "^7.0.0",
     "lodash": "^4.17.15",
